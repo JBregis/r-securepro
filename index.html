@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Cybersécurité Offensive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@1.43.1/tsparticles.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'midnight-blue': '#0f172a',
+                        'light-gray': '#f1f5f9',
+                        'vibrant-blue': '#3b82f6',
+                        'cyan': '#22d3ee'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'poppins': ['Poppins', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-in': 'slideIn 0.8s ease-out forwards',
+                        'float': 'float 3s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: 0 },
+                            '100%': { opacity: 1 }
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(30px)', opacity: 0 },
+                            '100%': { transform: 'translateY(0)', opacity: 1 }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, h5 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        .section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .nav-link::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #22d3ee;
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .skill-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(241, 245, 249, 0.1);
+            overflow: hidden;
+        }
+        .skill-progress {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #3b82f6, #22d3ee);
+            transition: width 1s ease-out;
+        }
+        .hexagon {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        .btn-hover {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-hover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+        }
+        .btn-hover:hover::after {
+            left: 100%;
+        }
+        .tool-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .particles-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        @media (max-width: 768px) {
+            .hero-content {
+                padding-top: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-midnight-blue text-light-gray">
+    <!-- Header avec bannière animée -->
+    <header class="relative h-screen flex flex-col">
+        <div id="particles-bg" class="particles-bg"></div>
+        
+        <!-- Navigation -->
+        <nav class="relative z-10 py-6 px-4 md:px-8 lg:px-16 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-vibrant-blue rounded-lg flex items-center justify-center mr-3">
+                    <i class="fas fa-shield-alt text-white text-xl"></i>
+                </div>
+                <span class="text-xl font-bold">R-secure<span class="text-cyan">Pro</span></span>
+            </div>
+            
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="nav-link text-light-gray hover:text-cyan transition-colors duration-300">À Propos</a>
+                <a href="#skills" class="nav-link text-light-gray hover:text-cyan transition-colors duration-300">Compétences</a>
+                <a href="#projects" class="nav-link text-light-gray hover:text-cyan transition-colors duration-300">Projets</a>
+                <a href="#certifications" class="nav-link text-light-gray hover:text-cyan transition-colors duration-300">Certifications</a>
+                <a href="#contact" class="nav-link text-light-gray hover:text-cyan transition-colors duration-300">Contact</a>
+            </div>
+            
+            <button id="mobile-menu" class="md:hidden text-light-gray">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </nav>
+        
+        <!-- Hero Section -->
+        <div class="relative z-10 flex-grow flex flex-col justify-center items-center px-4 text-center hero-content">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 animate-fade-in">
+                Expertise en <span class="text-cyan">Cybersécurité Offensive</span>
+            </h1>
+            <p class="text-xl md:text-2xl max-w-3xl mb-8 opacity-0 animate-fade-in" style="animation-delay: 0.3s;">
+                Pentesting • OSINT • Analyse de logs • Tests d'intrusion
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#contact" class="btn-hover bg-vibrant-blue hover:bg-cyan text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:-translate-y-1 shadow-lg">
+                    Me Contacter
+                </a>
+                <a href="https://drive.google.com/file/d/1h3l7IejiyS86n0-10Z8gmfyTD3uivj9E/view?usp=sharing" target="_blank" class="px-6 py-3 bg-transparent border-2 border-cyan text-cyan hover:bg-cyan/10 rounded-md font-medium transition duration-300 flex items-center">
+                        <i class="fas fa-download mr-2"></i> Télécharger CV
+                    </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <a href="#about" class="text-cyan">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 md:px-8 lg:px-16 py-16">
+        <!-- Section À Propos -->
+        <section id="about" class="section py-16">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center"><span class="text-cyan">À Propos</span> de Moi</h2>
+                <div class="h-1 w-20 bg-cyan mx-auto mb-12 rounded"></div>
+                
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="w-full md:w-1/3 flex justify-center">
+                        <div class="hexagon w-64 h-64 bg-gradient-to-br from-vibrant-blue to-cyan flex items-center justify-center">
+                            <div class="hexagon w-60 h-60 bg-midnight-blue flex items-center justify-center">
+                                <i class="fas fa-user-secret text-cyan text-6xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full md:w-2/3">
+                        <p class="text-lg mb-6">
+                            Passionné par la cybersécurité offensive, je me spécialise dans l'identification et la correction des vulnérabilités des systèmes d'information. Mon approche méthodique combine expertise technique et rigueur analytique pour renforcer la sécurité des organisations.
+                        </p>
+                        <p class="text-lg mb-6">
+                            Avec une solide expérience dans le pentesting et la collecte OSINT, je maîtrise les outils professionnels et les méthodologies d'audit les plus récentes. Mon objectif est d'apporter une valeur ajoutée concrète en anticipant les menaces et en proposant des solutions adaptées.
+                        </p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt text-cyan mr-3"></i>
+                                <span>Bénin, Cotonou</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-graduation-cap text-cyan mr-3"></i>
+                                <span>Licence en Cybersécurité</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-language text-cyan mr-3"></i>
+                                <span>Français, Anglais</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-briefcase text-cyan mr-3"></i>
+                                <span>Freelance & Missions</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Compétences -->
+        <section id="skills" class="section py-16">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center">Mes <span class="text-cyan">Compétences</span></h2>
+                <div class="h-1 w-20 bg-cyan mx-auto mb-12 rounded"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- Domaines d'expertise -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-6 text-cyan flex items-center">
+                            <i class="fas fa-crosshairs mr-3"></i>Domaines d'Expertise
+                        </h3>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span>Pentesting & Tests d'Intrusion</span>
+                                    <span>95%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 95%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span>Collecte OSINT</span>
+                                    <span>90%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span>Analyse de Logs</span>
+                                    <span>85%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span>Évaluation de Vulnérabilités</span>
+                                    <span>92%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 92%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Outils Maîtrisés -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-6 text-cyan flex items-center">
+                            <i class="fas fa-tools mr-3"></i>Outils Maîtrisés
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="tool-item bg-gray-800 rounded-lg p-4 flex flex-col items-center text-center transition-all duration-300">
+                                <i class="fas fa-bug text-cyan text-3xl mb-2"></i>
+                                <span>Burp Suite</span>
+                            </div>
+                            <div class="tool-item bg-gray-800 rounded-lg p-4 flex flex-col items-center text-center transition-all duration-300">
+                                <i class="fas fa-project-diagram text-cyan text-3xl mb-2"></i>
+                                <span>Maltego</span>
+                            </div>
+                            <div class="tool-item bg-gray-800 rounded-lg p-4 flex flex-col items-center text-center transition-all duration-300">
+                                <i class="fas fa-network-wired text-cyan text-3xl mb-2"></i>
+                                <span>Wireshark</span>
+                            </div>
+                            <div class="tool-item bg-gray-800 rounded-lg p-4 flex flex-col items-center text-center transition-all duration-300">
+                                <i class="fas fa-terminal text-cyan text-3xl mb-2"></i>
+                                <span>Metasploit</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Environnements de test -->
+                <div class="mt-16">
+                    <h3 class="text-xl font-bold mb-6 text-cyan flex items-center">
+                        <i class="fas fa-flask mr-3"></i>Environnements de Test
+                    </h3>
+                    <div class="flex flex-wrap gap-4 justify-center">
+                        <div class="bg-gray-800 rounded-lg py-3 px-6 flex items-center">
+                            <i class="fab fa-ubuntu text-cyan mr-2"></i>
+                            <span>Metasploitable</span>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg py-3 px-6 flex items-center">
+                            <i class="fas fa-shopping-cart text-cyan mr-2"></i>
+                            <span>Juice Shop</span>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg py-3 px-6 flex items-center">
+                            <i class="fas fa-shield-alt text-cyan mr-2"></i>
+                            <span>DVWA</span>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg py-3 px-6 flex items-center">
+                            <i class="fas fa-server text-cyan mr-2"></i>
+                            <span>OWASP WebGoat</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Projets -->
+        <section id="projects" class="section py-16">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center">Mes <span class="text-cyan">Projets</span></h2>
+                <div class="h-1 w-20 bg-cyan mx-auto mb-12 rounded"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Projet 1 -->
+                    <div class="card bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <div class="w-12 h-12 bg-cyan rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-lock text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Audit de Sécurité Infrastructure</h3>
+                        <p class="mb-4">Évaluation complète des vulnérabilités d'un système d'entreprise avec recommandations de correction.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-cyan/10 text-cyan text-sm px-3 py-1 rounded">Pentesting</span>
+                            <span class="bg-cyan/10 text-cyan text-sm px-3 py-1 rounded">Analyse de logs</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Projet 2 -->
+                    <div class="card bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <div class="w-12 h-12 bg-vibrant-blue rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-search text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Enquête OSINT</h3>
+                        <p class="mb-4">Collecte et analyse d'informations publiques pour une entreprise de sécurité privée.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-cyan/10 text-cyan text-sm px-3 py-1 rounded">OSINT</span>
+                            <span class="bg-cyan/10 text-cyan text-sm px-3 py-1 rounded">Analyse de données</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Projet 3 -->
+                    <div class="card bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <div class="w-12 h-12 bg-cyan rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-shield-alt text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">L'IA dans la Cybersécurité</h3>
+                        <p class="mb-4">Utilisation de l'IA dans la Cybbersécurité proactive: Détection et Réponse aux menaces en tant réel.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-cyan/10 text-cyan text-sm px-3 py-1 rounded">Machine learning</span>
+                            <span class="bg-cyan/10 text-cyan text-sm px-3 py-1 rounded">Pentesting</span>
+                            <span class="bg-cyan/10 text-cyan text-sm px-3 py-1 rounded">Analyse de logs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Certifications -->
+        <section id="certifications" class="section py-16">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center">Mes <span class="text-cyan">Certifications</span></h2>
+                <div class="h-1 w-20 bg-cyan mx-auto mb-12 rounded"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Certification 1 -->
+                    <div class="card bg-gradient-to-br from-vibrant-blue to-cyan rounded-xl p-6 shadow-lg">
+                        <div class="flex items-start">
+                            <div class="bg-white/20 p-3 rounded-lg mr-4">
+                                <i class="fas fa-shield-alt text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">MTCNA</h3>
+                                <p class="text-white/90 mt-2">MikroTik Certified Network Associate</p>
+                                <p class="text-white/70 mt-4">2022 - Cert. N° 2406NA3430</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Certification 2 -->
+                    <div class="card bg-gradient-to-br from-cyan to-vibrant-blue rounded-xl p-6 shadow-lg">
+                        <div class="flex items-start">
+                            <div class="bg-white/20 p-3 rounded-lg mr-4">
+                                <i class="fas fa-user-secret text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">Certified Penetration Tester</h3>
+                                <p class="text-white/90 mt-2">Pentest Junior Certification</p>
+                                <p class="text-white/70 mt-4">2025 - Cert.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Certification 3 -->
+                    <div class="card bg-gradient-to-br from-cyan to-vibrant-blue rounded-xl p-6 shadow-lg">
+                        <div class="flex items-start">
+                            <div class="bg-white/20 p-3 rounded-lg mr-4">
+                                <i class="fas fa-user-secret text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">CyberWarFare Labs</h3>
+                                <p class="text-white/90 mt-2">Certification Cyber Security Analyst [C3SA]</p>
+                                <p class="text-white/70 mt-4">2025 - Cert. EN COURS</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-12 text-center">
+                    <p class="text-lg max-w-2xl mx-auto">
+                        Actuellement en préparation de la certification <span class="font-bold text-cyan">OSCP</span> (Offensive Security Certified Professional) pour approfondir mes compétences en pentesting offensif.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Contact -->
+        <section id="contact" class="section py-16">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center">Me <span class="text-cyan">Contacter</span></h2>
+                <div class="h-1 w-20 bg-cyan mx-auto mb-12 rounded"></div>
+                
+                <div class="bg-gray-800 rounded-xl p-8 shadow-lg">
+                    <p class="text-center mb-8 text-lg">
+                        Vous avez un projet, une question ou souhaitez discuter d'une opportunité ? Contactez-moi !
+                    </p>
+                    
+                    <form id="contact-form" action="https://formspree.io/f/mzzvjgzn" method="POST" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                            <label for="name" class="block mb-2">Nom</label>
+                            <input type="text" id="name" name="name" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan">
+                            </div>
+                            <div>
+                            <label for="email" class="block mb-2">Email</label>
+                            <input type="email" id="email" name="email" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="subject" class="block mb-2">Sujet</label>
+                            <input type="text" id="subject" name="subject" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan">
+                        </div>
+                        <div>
+                            <label for="message" class="block mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan"></textarea>
+                        </div>
+                        <button type="submit" class="btn-hover bg-cyan hover:bg-vibrant-blue text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 w-full">
+                            Envoyer le message
+                        </button>
+                    </form>
+
+                    
+                    <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                        <div>
+                            <div class="w-14 h-14 bg-cyan/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-envelope text-cyan text-xl"></i>
+                            </div>
+                            <h4 class="font-bold mb-1">Email</h4>
+                            <a href="mailto:regis.cybersec@example.com" target="_blank">regisatacolodjou13@gmail.com</a>
+
+                        </div>
+                        <div>
+                            <div class="w-14 h-14 bg-cyan/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-phone text-cyan text-xl"></i>
+                            </div>
+                            <h4 class="font-bold mb-1">Téléphone</h4>
+                            <p>+229 01 63 06 13 10</p>
+                        </div>
+                        <div>
+                            <div class="w-14 h-14 bg-cyan/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fab fa-linkedin text-cyan text-xl"></i>
+                            </div>
+                            <h4 class="font-bold mb-1">LinkedIn</h4>
+                            <a href="https://www.linkedin.com/in/r%C3%A9gisatacolodjou?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" >Régis ATACOLODJOU</a><p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#" class="text-light-gray hover:text-cyan transition-colors duration-300">
+                    <i class="fab fa-github text-xl"></i>
+                </a>
+                <a href="#" class="text-light-gray hover:text-cyan transition-colors duration-300">
+                    <i class="fab fa-linkedin-in text-xl"></i>
+                </a>
+                <a href="#" class="text-light-gray hover:text-cyan transition-colors duration-300">
+                    <i class="fab fa-twitter text-xl"></i>
+                </a>
+                <a href="#" class="text-light-gray hover:text-cyan transition-colors duration-300">
+                    <i class="fas fa-blog text-xl"></i>
+                </a>
+            </div>
+            <p class="text-light-gray/70 mb-4">
+                © <span id="current-year"></span> Portfolio Cybersécurité Offensive. Tous droits réservés.
+            </p>
+            <p class="text-light-gray/50 text-sm">
+                Conçu avec <i class="fas fa-heart text-cyan"></i> pour les professionnels de la sécurité
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialisation de Particles.js
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.tsParticles) {
+                tsParticles.load("particles-bg", {
+                    particles: {
+                        number: {
+                            value: 80,
+                            density: {
+                                enable: true,
+                                value_area: 800
+                            }
+                        },
+                        color: {
+                            value: "#3b82f6"
+                        },
+                        shape: {
+                            type: "circle",
+                            stroke: {
+                                width: 0,
+                                color: "#000000"
+                            }
+                        },
+                        opacity: {
+                            value: 0.5,
+                            random: true,
+                            anim: {
+                                enable: true,
+                                speed: 1,
+                                opacity_min: 0.1,
+                                sync: false
+                            }
+                        },
+                        size: {
+                            value: 3,
+                            random: true,
+                            anim: {
+                                enable: true,
+                                speed: 2,
+                                size_min: 0.3,
+                                sync: false
+                            }
+                        },
+                        line_linked: {
+                            enable: true,
+                            distance: 150,
+                            color: "#22d3ee",
+                            opacity: 0.4,
+                            width: 1
+                        },
+                        move: {
+                            enable: true,
+                            speed: 1,
+                            direction: "none",
+                            random: true,
+                            straight: false,
+                            out_mode: "out",
+                            bounce: false
+                        }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: {
+                            onhover: {
+                                enable: true,
+                                mode: "grab"
+                            },
+                            onclick: {
+                                enable: true,
+                                mode: "push"
+                            },
+                            resize: true
+                        },
+                        modes: {
+                            grab: {
+                                distance: 140,
+                                line_linked: {
+                                    opacity: 1
+                                }
+                            },
+                            push: {
+                                particles_nb: 4
+                            }
+                        }
+                    },
+                    retina_detect: true
+                });
+            }
+
+            // Gestion de l'affichage des sections au scroll
+            const sections = document.querySelectorAll('.section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Mise à jour de l'année du copyright
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // Simulation de téléchargement du CV
+            document.getElementById('download-cv').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Téléchargement du CV initié. En production, ceci déclencherait le téléchargement du fichier.');
+            });
+
+            // Simulation d'envoi de formulaire
+            document.getElementById('contact-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Message envoyé avec succès ! En production, ceci enverrait réellement le message.');
+                this.reset();
+            });
+        });
+    </script>
+<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;" target="_blank" >DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=jude31/r-securepro" style="color: #fff;text-decoration: underline;" target="_blank" >Remix</a></p></body>
+</html>
